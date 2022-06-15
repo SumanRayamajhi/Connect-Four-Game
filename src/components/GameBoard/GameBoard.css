@@ -1,0 +1,25 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.game {
+  width: 550px;
+  height: 450px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.game-div {
+  width: 70px;
+  height: 70px;
+  margin: 2px;
+  border: 1px solid black;
+}
+
+.player-one {
+  background-color: green;
+}

@@ -1,13 +1,30 @@
 import React, { useState, useEffect } from "react";
 import "./GameBoard.css";
 import Players from "../Players/Players";
+import ScoreDisplay from "../ScoreDisplay/ScoreDisplay";
 
 const width = 7;
-const colors = ["green", "blue", ""];
+const colors = ["green", "blue"];
 
 const GameBoard = () => {
   const [gameBoard, setGameBoard] = useState([]);
   const [player, setPlayer] = useState("Player 1");
+  const [score, setScore] = useState("None");
+
+  const checkColumnForFour = () => {
+    for (let i = 0; i < 32; i++) {
+      const columnFour = [i, i + width, i + width * 2, i + width * 3];
+      const playerOneColor = colors[0];
+      const playerTwoColor = colors[1];
+      if (columnFour.every((squre) => gameBoard[squre] === playerOneColor)) {
+        setScore("Player 1 is a Winner!");
+      } else if (
+        columnFour.every((squre) => gameBoard[squre] === playerTwoColor)
+      ) {
+        setScore("Player 2 is a Winner!");
+      }
+    }
+  };
 
   const createGameBoard = () => {
     let randomBoardArrangement = [];
@@ -84,15 +101,30 @@ const GameBoard = () => {
         gameBoard[6] = colors[1];
       }
       setPlayer("Player 1");
-    } else {
-      gameBoard[i] = colors[2];
     }
   };
 
   console.log(player);
 
+  const moveColorsBelow = () => {
+    for (let i = 0; i < 35; i++) {
+      if (gameBoard[i + width] === undefined) {
+        gameBoard[i + width] = gameBoard[i];
+        gameBoard[i] = undefined;
+      }
+    }
+  };
+
+  useEffect(() => {
+    setInterval(() => {
+      moveColorsBelow();
+      checkColumnForFour();
+    }, 100);
+  }, [moveColorsBelow()]);
+
   return (
     <div className="app">
+      <ScoreDisplay score={score} />
       <Players player={player} />
       <div className="game">
         {gameBoard.map((color, i) => (

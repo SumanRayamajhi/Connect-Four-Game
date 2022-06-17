@@ -1,7 +1,7 @@
 import React from "react";
 
-function ScoreDisplay({ score }) {
-  return <div>Winner: {score}</div>;
+function ScoreDisplay({ winner }) {
+  return <div>Winner: {winner}</div>;
 }
 
 export default ScoreDisplay;

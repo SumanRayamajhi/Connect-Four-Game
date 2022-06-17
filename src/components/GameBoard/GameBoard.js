@@ -4,24 +4,83 @@ import Players from "../Players/Players";
 import ScoreDisplay from "../ScoreDisplay/ScoreDisplay";
 
 const width = 7;
-const colors = ["green", "blue"];
+const colors = ["#cc0000", " #ffcc00"];
 
 const GameBoard = () => {
   const [gameBoard, setGameBoard] = useState([]);
   const [player, setPlayer] = useState("Player 1");
-  const [score, setScore] = useState("None");
+  const [winner, setWinner] = useState("None");
 
   const checkColumnForFour = () => {
-    for (let i = 0; i < 32; i++) {
+    for (let i = 0; i <= 27; i++) {
       const columnFour = [i, i + width, i + width * 2, i + width * 3];
       const playerOneColor = colors[0];
       const playerTwoColor = colors[1];
       if (columnFour.every((squre) => gameBoard[squre] === playerOneColor)) {
-        setScore("Player 1 is a Winner!");
+        setWinner("Player 1 is a Winner!");
       } else if (
         columnFour.every((squre) => gameBoard[squre] === playerTwoColor)
       ) {
-        setScore("Player 2 is a Winner!");
+        setWinner("Player 2 is a Winner!");
+      }
+    }
+  };
+
+  const checkRowForFour = () => {
+    for (let i = 0; i < 42; i++) {
+      const rowFour = [i, i + 1, i + 2, i + 3];
+      const isNotValidSquare = [
+        4, 5, 6, 11, 12, 13, 18, 19, 20, 25, 26, 27, 32, 33, 34, 39, 40, 41,
+      ];
+      const playerOneColor = colors[0];
+      const playerTwoColor = colors[1];
+      if (isNotValidSquare.includes(i)) continue;
+      if (rowFour.every((squre) => gameBoard[squre] === playerOneColor)) {
+        setWinner("Player 1 is a Winner!");
+      } else if (
+        rowFour.every((squre) => gameBoard[squre] === playerTwoColor)
+      ) {
+        setWinner("Player 2 is a Winner!");
+      }
+    }
+  };
+
+  const checkDiagonalRightForFour = () => {
+    for (let i = 0; i < 42; i++) {
+      const diagonalRightFour = [i, i + 8, i + 8 * 2, i + 8 * 3];
+      const isNotValidSquare = [
+        4, 5, 6, 12, 13, 20, 21, 25, 28, 29, 35, 36, 37,
+      ];
+      const playerOneColor = colors[0];
+      const playerTwoColor = colors[1];
+      if (isNotValidSquare.includes(i)) continue;
+      if (
+        diagonalRightFour.every((squre) => gameBoard[squre] === playerOneColor)
+      ) {
+        setWinner("Player 1 is a Winner!");
+      } else if (
+        diagonalRightFour.every((squre) => gameBoard[squre] === playerTwoColor)
+      ) {
+        setWinner("Player 2 is a Winner!");
+      }
+    }
+  };
+
+  const checkDiagonalLeftForFour = () => {
+    for (let i = 0; i < 42; i++) {
+      const diagonalLeftFour = [i, i + 6, i + 6 * 2, i + 6 * 3];
+      const isNotValidSquare = [0, 1, 2, 7, 8, 14, 27, 33, 34, 39, 40, 41];
+      const playerOneColor = colors[0];
+      const playerTwoColor = colors[1];
+      if (isNotValidSquare.includes(i)) continue;
+      if (
+        diagonalLeftFour.every((squre) => gameBoard[squre] === playerOneColor)
+      ) {
+        setWinner("Player 1 is a Winner!");
+      } else if (
+        diagonalLeftFour.every((squre) => gameBoard[squre] === playerTwoColor)
+      ) {
+        setWinner("Player 2 is a Winner!");
       }
     }
   };
@@ -32,6 +91,11 @@ const GameBoard = () => {
       randomBoardArrangement.push(gameBoard[i]);
     }
     setGameBoard(randomBoardArrangement);
+  };
+
+  const resetHandler = () => {
+    setPlayer("Player 1");
+    setWinner("None");
   };
 
   useEffect(() => {
@@ -116,16 +180,23 @@ const GameBoard = () => {
   };
 
   useEffect(() => {
-    setInterval(() => {
+    const timer = setInterval(() => {
       moveColorsBelow();
       checkColumnForFour();
+      checkRowForFour();
+      checkDiagonalRightForFour();
+      checkDiagonalLeftForFour();
     }, 100);
-  }, [moveColorsBelow()]);
+    return () => clearInterval(timer);
+  }, [moveColorsBelow]);
 
   return (
     <div className="app">
-      <ScoreDisplay score={score} />
+      <ScoreDisplay winner={winner} />
       <Players player={player} />
+      <button className="ResetButton" onClick={resetHandler}>
+        Reset
+      </button>
       <div className="game">
         {gameBoard.map((color, i) => (
           <div

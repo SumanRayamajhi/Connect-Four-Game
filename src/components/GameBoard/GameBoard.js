@@ -17,11 +17,19 @@ const GameBoard = () => {
       const playerOneColor = colors[0];
       const playerTwoColor = colors[1];
       if (columnFour.every((squre) => gameBoard[squre] === playerOneColor)) {
-        setWinner("Player 1 is a Winner!");
+        <div
+          style={{ backgroundColor: "red", fontSize: "40px", fontWeight: 500 }}
+        >
+          {setWinner("Player 1 is a Winner!")}
+        </div>;
       } else if (
         columnFour.every((squre) => gameBoard[squre] === playerTwoColor)
       ) {
-        setWinner("Player 2 is a Winner!");
+        <div
+          style={{ backgroundColor: "red", fontSize: "40px", fontWeight: 500 }}
+        >
+          {setWinner("Player 2 is a Winner!")}
+        </div>;
       }
     }
   };
@@ -36,11 +44,19 @@ const GameBoard = () => {
       const playerTwoColor = colors[1];
       if (isNotValidSquare.includes(i)) continue;
       if (rowFour.every((squre) => gameBoard[squre] === playerOneColor)) {
-        setWinner("Player 1 is a Winner!");
+        <div
+          style={{ backgroundColor: "red", fontSize: "40px", fontWeight: 500 }}
+        >
+          {setWinner("Player 1 is a Winner!")}
+        </div>;
       } else if (
         rowFour.every((squre) => gameBoard[squre] === playerTwoColor)
       ) {
-        setWinner("Player 2 is a Winner!");
+        <div
+          style={{ backgroundColor: "red", fontSize: "40px", fontWeight: 500 }}
+        >
+          {setWinner("Player 2 is a Winner!")}
+        </div>;
       }
     }
   };
@@ -87,13 +103,15 @@ const GameBoard = () => {
 
   const createGameBoard = () => {
     let randomBoardArrangement = [];
+    const initalState = "";
     for (let i = 0; i < width * 6; i++) {
-      randomBoardArrangement.push(gameBoard[i]);
+      randomBoardArrangement.push(initalState);
     }
     setGameBoard(randomBoardArrangement);
   };
 
   const resetHandler = () => {
+    createGameBoard();
     setPlayer("Player 1");
     setWinner("None");
   };
@@ -119,75 +137,81 @@ const GameBoard = () => {
     const seventhColumn = [6, 13, 20, 27, 34, 41];
     const isSeventhColumn = seventhColumn.includes(i);
 
-    if (player === "Player 1") {
-      if (isFirstColumn) {
-        gameBoard[0] = colors[0];
+    if (winner === "None") {
+      if (player === "Player 1") {
+        if (isFirstColumn) {
+          gameBoard[0] = colors[0];
+        }
+        if (isSecondColumn) {
+          gameBoard[1] = colors[0];
+        }
+        if (isThirdColumn) {
+          gameBoard[2] = colors[0];
+        }
+        if (isForthColumn) {
+          gameBoard[3] = colors[0];
+        }
+        if (isFifthColumn) {
+          gameBoard[4] = colors[0];
+        }
+        if (isSixthColumn) {
+          gameBoard[5] = colors[0];
+        }
+        if (isSeventhColumn) {
+          gameBoard[6] = colors[0];
+        }
+        setPlayer("Player 2");
+      } else if (player === "Player 2") {
+        if (isFirstColumn) {
+          gameBoard[0] = colors[1];
+        }
+        if (isSecondColumn) {
+          gameBoard[1] = colors[1];
+        }
+        if (isThirdColumn) {
+          gameBoard[2] = colors[1];
+        }
+        if (isForthColumn) {
+          gameBoard[3] = colors[1];
+        }
+        if (isFifthColumn) {
+          gameBoard[4] = colors[1];
+        }
+        if (isSixthColumn) {
+          gameBoard[5] = colors[1];
+        }
+        if (isSeventhColumn) {
+          gameBoard[6] = colors[1];
+        }
+        setPlayer("Player 1");
       }
-      if (isSecondColumn) {
-        gameBoard[1] = colors[0];
-      }
-      if (isThirdColumn) {
-        gameBoard[2] = colors[0];
-      }
-      if (isForthColumn) {
-        gameBoard[3] = colors[0];
-      }
-      if (isFifthColumn) {
-        gameBoard[4] = colors[0];
-      }
-      if (isSixthColumn) {
-        gameBoard[5] = colors[0];
-      }
-      if (isSeventhColumn) {
-        gameBoard[6] = colors[0];
-      }
-      setPlayer("Player 2");
-    } else if (player === "Player 2") {
-      if (isFirstColumn) {
-        gameBoard[0] = colors[1];
-      }
-      if (isSecondColumn) {
-        gameBoard[1] = colors[1];
-      }
-      if (isThirdColumn) {
-        gameBoard[2] = colors[1];
-      }
-      if (isForthColumn) {
-        gameBoard[3] = colors[1];
-      }
-      if (isFifthColumn) {
-        gameBoard[4] = colors[1];
-      }
-      if (isSixthColumn) {
-        gameBoard[5] = colors[1];
-      }
-      if (isSeventhColumn) {
-        gameBoard[6] = colors[1];
-      }
-      setPlayer("Player 1");
     }
   };
 
   console.log(player);
 
   const moveColorsBelow = () => {
-    for (let i = 0; i < 35; i++) {
-      if (gameBoard[i + width] === undefined) {
-        gameBoard[i + width] = gameBoard[i];
-        gameBoard[i] = undefined;
+    for (let i = 0; i < 42 - width; i++) {
+      const playerOneColor = colors[0];
+      const playerTwoColor = colors[1];
+      if (gameBoard[i] === playerOneColor || gameBoard[i] === playerTwoColor) {
+        if (gameBoard[i + width] === "") {
+          gameBoard[i + width] = gameBoard[i];
+          gameBoard[i] = "";
+        }
       }
     }
   };
 
   useEffect(() => {
     const timer = setInterval(() => {
-      moveColorsBelow();
       checkColumnForFour();
       checkRowForFour();
       checkDiagonalRightForFour();
       checkDiagonalLeftForFour();
+      moveColorsBelow();
     }, 100);
-    return () => clearInterval(timer);
+    return () => clearTimeout(timer);
   }, [moveColorsBelow]);
 
   return (

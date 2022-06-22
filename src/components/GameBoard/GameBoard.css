@@ -63,3 +63,25 @@
     rgba(44, 187, 99, 0.25) 0 16px 32px;
   transform: scale(1.05) rotate(-1deg);
 }
+
+@media only screen and (max-width: 425px) {
+  .app {
+    font-weight: 450;
+    font-size: 15px;
+  }
+
+  .game {
+    width: 290px;
+    height: 235px;
+    padding: 7px;
+  }
+
+  .game-div {
+    width: 28px;
+    height: 28px;
+    margin: 2px;
+  }
+  .ResetButton {
+    padding: 5px 15px;
+  }
+}

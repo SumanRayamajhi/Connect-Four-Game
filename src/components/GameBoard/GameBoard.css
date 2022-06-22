@@ -85,3 +85,14 @@
     padding: 5px 15px;
   }
 }
+
+@media only screen and (max-width: 320px) {
+  .game {
+    width: 250px;
+  }
+  .game-div {
+    width: 25px;
+    height: 25px;
+    margin: 1px;
+  }
+}

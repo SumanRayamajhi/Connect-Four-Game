@@ -132,7 +132,7 @@ const GameBoard = () => {
   const moveColorsBelow = () => {
     setGameBoard((prevValue) => {
       let newValue = [...prevValue];
-      for (let i = 0; i < newValue.length - width; i++) {
+      for (let i = 0; i < newValue.length; i++) {
         const playerOneColor = colors[0];
         const playerTwoColor = colors[1];
         if (newValue[i] === playerOneColor || newValue[i] === playerTwoColor) {
